@@ -4,36 +4,41 @@ update_system() {
     dnf -y update
 }
 
+install_rpmfusion() {
+	dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+    dnf -y update
+}
+
 install_basic_packages() {
-    apt install vim net-tools rsync openssh-server -y
-    apt install --install-suggests gnome-software -y
+    dnf -y install gnome-tweaks gnome-shell-extension-common.noarch gnome-extensions-app gnome-shell-extension-dash-to-dock
+    dnf -y install vim filezilla thunderbird tigervnc git meld gimp \
+            vlc cmake gcc-c++ boost-devel flatpak thunderbird vim unrar  \
+            gnome-shell-extension-appindicator tigervnc dnsutils \
+            meld astyle podman podman-compose containernetworking-plugins inxi vlc chromium \
+            thermald curl wget liberation*fonts* python3-pip pipx \
+            keepassxc firewall-config gnome-icon-theme cabextract lzip p7zip p7zip-plugins unrar \
+            java-latest-openjdk xsel
 }
 
 install_extra_packages() {
-    apt install ntp flatpak vim net-tools vim build-essential ffmpeg  rar unrar  \
-	 	p7zip-rar libavcodec-extra gstreamer1.0-* gstreamer1.0-plugins* \
-        gnome-shell-extension-appindicator tigervnc-viewer dnsutils \
-	 	meld astyle podman inxi vlc texlive-extra-utils graphicsmagick-imagemagick-compat  \
-        python3-pip pipx apt-transport-https ca-certificates curl software-properties-common wget \
-        fonts-liberation libu2f-udev libvulkan1 \
-		git xsel gnome-tweaks gnome-shell-extension-prefs gnome-shell-extensions \
-        hplip keepassxc distrobox synaptic default-jre -y
+    dnf -y install amrnb amrwb faad2 flac gpac-libs lame libde265 libfc14audiodecoder mencoder x264 x265 --allowerasing
+    dnf -y install hplip  hplip-gui distrobox keepassxc
 }
 
 setup_fonts() {
-    echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections    
-    apt install ttf-mscorefonts-installer -y
+    dnf -y install curl cabextract xorg-x11-font-utils fontconfig
+    rpm -i https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
 }
 
 setup_flathub() {
-    apt install flatpak -y
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    flatpak install com.github.tchx84.Flatseal -y
+    dnf -y install flatpak
+    flatpak -y install com.github.tchx84.Flatseal
+    #flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
 setup_tlp() {
-    apt install tlp tlp-rdw smartmontools -y
-    apt remove power-profiles-daemon -y
+    dnf -y install tlp tlp-rdw smartmontools
+    dnf -y remove power-profiles-daemon
     echo '
 TLP_ENABLE=1
 CPU_SCALING_GOVERNOR_ON_BAT=powersave
@@ -49,38 +54,37 @@ USB_EXCLUDE_BTUSB=1
     tlp-stat -s
 }
 
+setup_firewall() {
+    systemctl disable sshd
+    firewall-cmd --set-default-zone drop
+    firewall-cmd --reload
+    firewall-cmd --list-all
+}
+
 install_chrome() {
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    apt install ./google-chrome-stable_current_amd64.deb -y
-    rm -f google-chrome-stable_current_amd64.deb
+    dnf -y install google-chrome-stable
 }
 
 install_veracrypt() {
     export VC_VERSION="1.26.14"
-    wget https://launchpad.net/veracrypt/trunk/$VC_VERSION/+download/veracrypt-$VC_VERSION-Ubuntu-24.04-amd64.deb
-    wget https://launchpad.net/veracrypt/trunk/$VC_VERSION/+download/veracrypt-$VC_VERSION-Ubuntu-24.04-amd64.deb.sig
+    cd /tmp
+    wget https://launchpad.net/veracrypt/trunk/$VC_VERSION/+download/veracrypt-$VC_VERSION-Fedora-40-x86_64.rpm
+    wget https://launchpad.net/veracrypt/trunk/$VC_VERSION/+download/veracrypt-$VC_VERSION-Fedora-40-x86_64.rpm.sig
     wget https://www.idrix.fr/VeraCrypt/VeraCrypt_PGP_public_key.asc
     gpg --import VeraCrypt_PGP_public_key.asc
-    gpg --verify veracrypt-$VC_VERSION-Ubuntu-24.04-amd64.deb.sig
-    apt install ./veracrypt-$VC_VERSION-Ubuntu-24.04-amd64.deb -y
-    rm -f veracrypt-$VC_VERSION-Ubuntu-24.04-amd64.deb
-    rm -f veracrypt-$VC_VERSION-Ubuntu-24.04-amd64.deb.sig
-    rm -f VeraCrypt_PGP_public_key.asc
-    rm -f VeraCrypt_PGP_public_key.asc.1   
+    gpg --verify veracrypt-$VC_VERSION-Fedora-40-x86_64.rpm.sig
+    sudo dnf -y install ./veracrypt*.rpm
+    rm -f VeraCrypt* veracrypt*  
 }
 
 install_vscode() {
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-    sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-    rm -f packages.microsoft.gpg
-    apt update -y
-    apt install code -y
+    rpm --import https://packages.microsoft.com/keys/microsoft.asc
+    sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+    dnf -y install code
 }
 
 install_freeplane() {
     #flatpak install org.freeplane.App -y
-    apt install freeplane openjdk-17-jdk -y
 }
 
 install_qemu() {
@@ -88,23 +92,12 @@ install_qemu() {
     systemctl stop pcscd
     systemctl disable pcscd
     systemctl mask pcscd
-    apt install qemu-system qemu-kvm libvirt-daemon libvirt-clients bridge-utils virt-manager libvirt-daemon-system \
-        virtinst qemu-utils virt-viewer spice-client-gtk gir1.2-spice* ebtables swtpm swtpm-tools ovmf virtiofsd -y
-	virsh net-autostart default
-    modprobe vhost_net    
+    dnf -y install bridge-utils libvirt virt-install qemu-kvm virt-viewer virt-manager spice-webdavd spice-gtk-tools swtpm.x86_64 edk2-ovmf  
+    sed -i 's/^SELINUX=.*/SELINUX=permissive/' /etc/selinux/config
+    setenforce 0
     for userpath in /home/*; do
         usermod -a -G libvirt,kvm $(basename $userpath)
     done    
-}
-
-setup_firewall() {
-    apt install ufw gufw -y
-    systemctl stop ssh.socket ssh
-    systemctl disable ssh
-    ufw enable    
-    ufw default deny incoming
-    ufw default allow outgoing
-    ufw status verbose
 }
 
 ask_reboot() {
@@ -122,6 +115,7 @@ ask_reboot() {
 }
 
 msg() {
+    sleep 5
     tput setaf 2
     echo "[*] $1"
     tput sgr0
@@ -173,6 +167,8 @@ main() {
 auto() {
     msg 'Updating system'
     update_system
+    msg 'Install rpmfusion'
+    install_rpmfusion
     msg 'Installing basic packages'
     install_basic_packages
     msg 'Installing extra packages'
