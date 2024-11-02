@@ -33,7 +33,7 @@ setup_fonts() {
 setup_flathub() {
     dnf -y install flatpak
     flatpak -y install com.github.tchx84.Flatseal
-    #flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
 setup_tlp() {
@@ -84,7 +84,7 @@ install_vscode() {
 }
 
 install_freeplane() {
-    #flatpak install org.freeplane.App -y
+    flatpak -y install org.freeplane.App
 }
 
 install_qemu() {
