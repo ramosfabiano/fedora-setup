@@ -11,7 +11,7 @@ install_rpmfusion() {
 }
 
 install_basic_packages() {
-    dnf -y install vim filezilla thunderbird tigervnc git meld gimp \
+    dnf -y install flatpak vim filezilla thunderbird tigervnc git meld gimp \
             vlc cmake gcc-c++ boost-devel flatpak thunderbird vim unrar  \
             gnome-shell-extension-appindicator tigervnc dnsutils java-latest-openjdk \
             meld astyle podman podman-compose containernetworking-plugins inxi vlc chromium \
@@ -32,9 +32,8 @@ setup_fonts() {
 }
 
 setup_flatpak() {
-    dnf -y install flatpak
     flatpak -y install com.github.tchx84.Flatseal
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    #flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 }
 
 setup_tlp() {
