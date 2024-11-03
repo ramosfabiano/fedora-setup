@@ -5,19 +5,20 @@ update_system() {
 }
 
 install_rpmfusion() {
-	dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+	dnf -y install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm 
+    dnf -y install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
     dnf -y update
 }
 
 install_basic_packages() {
-    dnf -y install gnome-tweaks gnome-shell-extension-common.noarch gnome-extensions-app gnome-shell-extension-dash-to-dock
     dnf -y install vim filezilla thunderbird tigervnc git meld gimp \
             vlc cmake gcc-c++ boost-devel flatpak thunderbird vim unrar  \
-            gnome-shell-extension-appindicator tigervnc dnsutils \
+            gnome-shell-extension-appindicator tigervnc dnsutils java-latest-openjdk \
             meld astyle podman podman-compose containernetworking-plugins inxi vlc chromium \
-            thermald curl wget liberation*fonts* python3-pip pipx \
+            thermald curl wget liberation*fonts* python3-pip pipx xsel \
             keepassxc firewall-config gnome-icon-theme cabextract lzip p7zip p7zip-plugins unrar \
-            java-latest-openjdk xsel
+            gnome-tweaks gnome-shell-extension-common.noarch gnome-extensions-app \
+            gnome-shell-extension-dash-to-dock
 }
 
 install_extra_packages() {
@@ -30,7 +31,7 @@ setup_fonts() {
     rpm -i https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
 }
 
-setup_flathub() {
+setup_flatpak() {
     dnf -y install flatpak
     flatpak -y install com.github.tchx84.Flatseal
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -84,7 +85,8 @@ install_vscode() {
 }
 
 install_freeplane() {
-    flatpak -y install org.freeplane.App
+    #flatpak -y install org.freeplane.App
+    yum -y install https://download.opensuse.org/repositories/Office/openSUSE_Leap_15.5/noarch/freeplane-1.11.12-lp155.1.1.noarch.rpm
 }
 
 install_qemu() {
@@ -173,8 +175,8 @@ auto() {
     install_basic_packages
     msg 'Installing extra packages'
     install_extra_packages    
-    msg 'Setting up flathub'
-    setup_flathub    
+    msg 'Setting up flatpak'
+    setup_flatpak    
     msg 'Setting up TLP'
     setup_tlp
     msg 'Setting up firewall'

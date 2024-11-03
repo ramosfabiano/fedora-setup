@@ -8,6 +8,6 @@ This script is supposed to be run right after a fresh install.
 
 You can download the script from the repo or use this one-liner command, there are no dependencies required.
 
-`sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/ramosfabiano/fedora-setup/main/fedora-setup.sh)"`
+`sudo bash -e -c "$(wget -qO- https://raw.githubusercontent.com/ramosfabiano/fedora-setup/main/fedora-setup.sh)"`
 
 After the install, reboot. *Note that this script is NOT idempotent.*
