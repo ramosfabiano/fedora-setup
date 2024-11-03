@@ -10,4 +10,4 @@ You can download the script from the repo or use this one-liner command, there a
 
 `sudo bash -e -c "$(wget -qO- https://raw.githubusercontent.com/ramosfabiano/fedora-setup/main/fedora-setup.sh)"`
 
-After the install, reboot. *Note that this script is NOT idempotent.*
+After the install, reboot.  *Note that this script is NOT idempotent.*
