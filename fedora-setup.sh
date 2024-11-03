@@ -14,7 +14,7 @@ install_basic_packages() {
     dnf -y install flatpak vim filezilla thunderbird tigervnc git meld gimp \
             vlc cmake gcc-c++ boost-devel flatpak thunderbird vim unrar  \
             gnome-shell-extension-appindicator tigervnc dnsutils java-latest-openjdk \
-            meld astyle podman podman-compose containernetworking-plugins inxi vlc chromium \
+            meld astyle podman podman-compose containernetworking-plugins inxi vlc \
             thermald curl wget liberation*fonts* python3-pip pipx xsel \
             keepassxc firewall-config gnome-icon-theme cabextract lzip p7zip p7zip-plugins unrar \
             gnome-tweaks gnome-shell-extension-common.noarch gnome-extensions-app \
