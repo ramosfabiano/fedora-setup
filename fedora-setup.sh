@@ -92,7 +92,7 @@ gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 
 install_freeplane() {
     #flatpak -y install org.freeplane.App
-    yum -y install https://download.opensuse.org/repositories/Office/openSUSE_Leap_15.5/noarch/freeplane-1.11.12-lp155.1.1.noarch.rpm
+    yum -y install https://download.opensuse.org/repositories/Office/openSUSE_Tumbleweed/noarch/freeplane-1.11.12-1.9.noarch.rpm
 }
 
 disable_smart_card() {
