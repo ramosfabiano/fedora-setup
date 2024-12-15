@@ -18,7 +18,8 @@ install_basic_packages() {
         python3-pip pipx xsel inxi vlc keepassxc firewall-config gnome-icon-theme \
         hplip hplip-gui cabextract lzip p7zip p7zip-plugins unrar \
         gnome-tweaks gnome-shell-extension-common.noarch gnome-extensions-app \
-        gnome-shell-extension-dash-to-dock gnome-shell-extension-appindicator
+        gnome-shell-extension-dash-to-dock gnome-shell-extension-appindicator \
+        gdk-pixbuf2-modules-extra
 }
 
 install_extra_packages() {
