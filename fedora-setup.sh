@@ -24,6 +24,7 @@ install_basic_packages() {
 
 install_extra_packages() {
     dnf -y install amrnb amrwb faad2 flac gpac-libs lame libde265 libfc14audiodecoder mencoder x264 x265 --allowerasing
+    dnf -y install solaar  # logi bolt
 }
 
 setup_fonts() {
