@@ -13,7 +13,7 @@ install_rpmfusion() {
 install_basic_packages() {
     dnf -y install flatpak vim filezilla thunderbird tigervnc git meld gimp \
         vlc cmake gcc-c++ boost-devel flatpak thunderbird vim unrar  \
-        tigervnc dnsutils java-latest-openjdk astyle podman podman-compose distrobox \
+        tigervnc dnsutils java-latest-openjdk astyle podman podman-compose podman-docker docker-compose distrobox \
         containernetworking-plugins meld thermald curl wget liberation*fonts* \
         python3-pip pipx xsel inxi vlc keepassxc firewall-config gnome-icon-theme \
         hplip hplip-gui cabextract lzip p7zip p7zip-plugins unrar \
