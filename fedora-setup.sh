@@ -62,10 +62,6 @@ setup_firewall() {
     firewall-cmd --list-all
 }
 
-remove_firefox() {
-    sudo dnf -y remove firefox
-}
-
 install_chrome() {
     dnf -y install google-chrome-stable
 }
@@ -197,8 +193,6 @@ auto() {
     setup_firewall
     msg 'Install MS fonts'
     setup_fonts
-    msg 'Remove firefox'
-    remove_firefox
     msg 'Install chrome'
     install_chrome
     msg 'Install veracrypt'
