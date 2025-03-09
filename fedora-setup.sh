@@ -13,7 +13,7 @@ install_rpmfusion() {
 install_basic_packages() {
     dnf -y install flatpak vim filezilla thunderbird tigervnc git meld gimp \
         vlc cmake gcc-c++ boost-devel flatpak thunderbird vim unrar  \
-        tigervnc dnsutils java-latest-openjdk astyle podman podman-compose distrobox \
+        tigervnc dnsutils java-latest-openjdk astyle  \
         containernetworking-plugins meld thermald curl wget liberation*fonts* \
         python3-pip pipx xsel inxi vlc keepassxc firewall-config gnome-icon-theme \
         hplip hplip-gui cabextract lzip p7zip p7zip-plugins unrar \
@@ -25,6 +25,10 @@ install_basic_packages() {
 install_extra_packages() {
     dnf -y install amrnb amrwb faad2 flac gpac-libs lame libde265 libfc14audiodecoder mencoder x264 x265 --allowerasing
     dnf -y install solaar  # logi bolt
+}
+
+setup_podman() {
+    dnf -y install podman podman-compose distrobox
 }
 
 setup_fonts() {
@@ -184,7 +188,9 @@ auto() {
     msg 'Installing basic packages'
     install_basic_packages
     msg 'Installing extra packages'
-    install_extra_packages    
+    install_extra_packages   
+    msg 'Setup podman'
+    setup_podman
     msg 'Setting up flatpak'
     setup_flatpak    
     msg 'Setting up TLP'
