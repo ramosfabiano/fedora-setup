@@ -28,7 +28,22 @@ install_extra_packages() {
 }
 
 setup_podman() {
-    dnf -y install podman podman-compose distrobox
+    dnf -y install podman podman-compose 
+}
+
+setup_docker() {
+    dnf -y remove docker*
+
+    dnf -y install dnf-plugins-core
+    dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+    systemctl enable --now docker
+
+    # groupadd docker
+    for userpath in /home/*; do
+        usermod -a -G docker $(basename $userpath)
+    done 
 }
 
 setup_fonts() {
@@ -189,8 +204,9 @@ auto() {
     install_basic_packages
     msg 'Installing extra packages'
     install_extra_packages   
-    msg 'Setup podman'
-    setup_podman
+    msg 'Setup containers'
+    #setup_podman
+    setup_docker
     msg 'Setting up flatpak'
     setup_flatpak    
     msg 'Setting up TLP'
