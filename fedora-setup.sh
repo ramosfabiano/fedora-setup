@@ -131,6 +131,10 @@ install_qemu() {
     done    
 }
 
+fix_libvirt_network() {
+    echo "firewall_backend  = \"iptables\"" >> /etc/libvirt/network.conf
+}
+
 ask_reboot() {
     echo 'Reboot now? (y/n)'
     while true; do
@@ -227,6 +231,8 @@ auto() {
     disable_smart_card
     msg 'Install qemu'
     install_qemu
+    msg 'Libvirt network fix'
+    fix_libvirt_network
 }
 
 (return 2> /dev/null) || main
