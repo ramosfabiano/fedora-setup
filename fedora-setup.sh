@@ -218,8 +218,8 @@ auto() {
     setup_firewall
     msg 'Install MS fonts'
     setup_fonts
-    msg 'Install chrome'
-    install_chrome
+    #msg 'Install chrome'
+    #install_chrome
     msg 'Install veracrypt'
     install_veracrypt
     msg 'Install code'
